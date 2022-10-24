@@ -8,9 +8,10 @@ const Schema = mongoose.Schema;
 const promoSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
-    iamge: {
+    image: {
         type: String,
         required: true
     },
@@ -20,7 +21,8 @@ const promoSchema = new Schema({
     },
     price: {
         type: Currency,
-        required: true
+        required: true,
+        min: 0
     },
     description: {
         type: String,
