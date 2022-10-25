@@ -43,13 +43,24 @@ function auth(req, res, next) {
       return next(err);
     }
   
-    const auth = new Buffer(authHeader.split(' ')[1], 'base64').toString().split(':');
+    const auth = new Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
   
     const username = auth[0];
     const password = auth[1];
   
     if(username === 'admin' && password === 'password') {
       res.cookie('user', 'admin', { signed: true })
+      next();
+    }
+    else {
+      const err = new Error('You are not authenticated!');
+      res.setHeader('WWW-Authenticate', 'Basic');
+      err.status = 401;
+      return next(err);
+    }
+  }
+  else {
+    if(req.signedCookies.user === 'admin') {
       next();
     }
     else {
