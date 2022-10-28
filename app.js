@@ -3,13 +3,15 @@ const express = require('express');
 const path = require('path');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
+const authenticate = require('./authenticate');
+const config = require('./config');
 const logger = require('morgan');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 
 const mongoose = require('mongoose');
 
-const url = 'mongodb://localhost:27017/conFusion';
+const url = mongo.url;
 const connect = mongoose.connect(url);
 
 connect.then((db) => {
@@ -21,6 +23,7 @@ const usersRouter = require('./routes/users');
 const dishRouter = require('./routes/dishRouter');
 const promoRouter = require('./routes/promoRouter');
 const leaderRouter = require('./routes/leaderRouter');
+const { mongo } = require('mongoose');
 
 var app = express();
 
