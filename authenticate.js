@@ -36,3 +36,18 @@ exports.jwtPassport = passport.use(new JwtSrategy(opts, (jwt_payload, done) => {
 }));
 
 exports.verifyUser = passport.authenticate('jwt', {session: false});
+
+exports.verifyAdmin = (req, res, next) => {
+    User.findOne({_id: req.user._id})
+    .then((user) => {
+        if(user.admin) {
+            next();
+        }
+        else {
+            err = new Error('You are not authorized to proceed!');
+            err.status = 403;
+            return next(err);
+        }
+    }, (err) => next(err))
+    .catch((err) => next(err));
+}
